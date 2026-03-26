@@ -41,6 +41,28 @@ func (n *CategoryNode) FindCategory(path []string) (*CategoryNode, error) {
 	return sub.FindCategory(path[1:])
 }
 
+// FindByName searches for a category by name anywhere in the subtree.
+func (n *CategoryNode) FindByName(name string) *CategoryNode {
+	if n.Name == name {
+		return n
+	}
+	for _, sub := range n.SubCategories {
+		if found := sub.FindByName(name); found != nil {
+			return found
+		}
+	}
+	return nil
+}
+
+// GetAllCategoryNames returns the names of the category and all its subcategories.
+func (n *CategoryNode) GetAllCategoryNames() []string {
+	names := []string{n.Name}
+	for _, sub := range n.SubCategories {
+		names = append(names, sub.GetAllCategoryNames()...)
+	}
+	return names
+}
+
 // PrintTree prints the category tree for debugging.
 func (n *CategoryNode) PrintTree(indent string) {
 	fmt.Printf("%s%s\n", indent, n.Name)
@@ -69,7 +91,18 @@ func (t *CategoryTree) AddCategory(path []string) {
 func (t *CategoryTree) FindCategory(path []string) (*CategoryNode, error) {
 	t.mu.RLock()
 	defer t.mu.RUnlock()
-	return t.Root.FindCategory(path)
+	// Try path-based search first.
+	node, err := t.Root.FindCategory(path)
+	if err == nil {
+		return node, nil
+	}
+	// If it's a single name, try global search.
+	if len(path) == 1 {
+		if node := t.Root.FindByName(path[0]); node != nil {
+			return node, nil
+		}
+	}
+	return nil, err
 }
 
 // PrintTree prints the category tree safely.

@@ -1,0 +1,34 @@
+File: auction.test
+Build ID: 46424eefe6ceef8a86aa74e4e632a2905d00b3da
+Type: cpu
+Time: 2026-03-26 16:58:31 IST
+Duration: 201.49ms, Total samples = 10ms ( 4.96%)
+Showing nodes accounting for 10ms, 100% of 10ms total
+      flat  flat%   sum%        cum   cum%
+      10ms   100%   100%       10ms   100%  runtime.funcInfo.entry (inline)
+         0     0%   100%       10ms   100%  github.com/nextgen-training-kushal/Day-13/auction.(*AuctionManager).PlaceBid
+         0     0%   100%       10ms   100%  github.com/nextgen-training-kushal/Day-13/auction.TestConcurrentBidding.func1
+         0     0%   100%       10ms   100%  internal/sync.(*Mutex).Lock (inline)
+         0     0%   100%       10ms   100%  internal/sync.(*Mutex).lockSlow
+         0     0%   100%       10ms   100%  internal/sync.runtime_SemacquireMutex
+         0     0%   100%       10ms   100%  runtime.(*mLockProfile).captureStack
+         0     0%   100%       10ms   100%  runtime.(*mLockProfile).captureStack.func1
+         0     0%   100%       10ms   100%  runtime.(*mLockProfile).recordUnlock
+         0     0%   100%       10ms   100%  runtime.(*unwinder).next
+         0     0%   100%       10ms   100%  runtime.(*unwinder).resolveInternal
+         0     0%   100%       10ms   100%  runtime.acquireSudog
+         0     0%   100%       10ms   100%  runtime.copystack
+         0     0%   100%       10ms   100%  runtime.funcspdelta (inline)
+         0     0%   100%       10ms   100%  runtime.mallocgc
+         0     0%   100%       10ms   100%  runtime.newobject
+         0     0%   100%       10ms   100%  runtime.newstack
+         0     0%   100%       10ms   100%  runtime.pcvalue
+         0     0%   100%       10ms   100%  runtime.semacquire1
+         0     0%   100%       10ms   100%  runtime.stackalloc
+         0     0%   100%       10ms   100%  runtime.stackcacherefill
+         0     0%   100%       10ms   100%  runtime.tracebackPCs
+         0     0%   100%       10ms   100%  runtime.unlock (inline)
+         0     0%   100%       10ms   100%  runtime.unlock2
+         0     0%   100%       10ms   100%  runtime.unlock2Wake
+         0     0%   100%       10ms   100%  runtime.unlockWithRank (inline)
+         0     0%   100%       10ms   100%  sync.(*Mutex).Lock (inline)

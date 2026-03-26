@@ -9,13 +9,15 @@ import (
 
 	"github.com/nextgen-training-kushal/Day-13/category"
 	"github.com/nextgen-training-kushal/Day-13/models"
+	"github.com/nextgen-training-kushal/Day-13/sse"
 	"github.com/nextgen-training-kushal/Day-13/user"
 )
 
 func TestAuctionManager(t *testing.T) {
 	um := user.NewUserManager()
 	ct := category.NewCategoryTree()
-	am := NewAuctionManager(um, ct)
+	br := sse.NewBroker(nil)
+	am := NewAuctionManager(um, ct, br.Broadcast)
 
 	// Setup User
 	u := &models.User{ID: 1, Name: "Kushal", Balance: 1000}
@@ -34,7 +36,7 @@ func TestAuctionManager(t *testing.T) {
 	am.RegisterItem(item)
 
 	// Test Place Bid
-	err := am.PlaceBid(1, 1, 150)
+	_, err := am.PlaceBid(1, 1, 150)
 	if err != nil {
 		t.Fatalf("Failed to place bid: %v", err)
 	}
@@ -62,7 +64,7 @@ func TestAuctionManager(t *testing.T) {
 	}
 
 	// Test End Auction
-	am.PlaceBid(1, 1, 200)
+	_, _ = am.PlaceBid(1, 1, 200)
 	winner, err := am.EndAuction(1)
 	if err != nil {
 		t.Fatalf("Failed to end auction: %v", err)
@@ -75,7 +77,8 @@ func TestAuctionManager(t *testing.T) {
 func TestAuctionManagerThunderingHerd(t *testing.T) {
 	um := user.NewUserManager()
 	ct := category.NewCategoryTree()
-	am := NewAuctionManager(um, ct)
+	br := sse.NewBroker(nil)
+	am := NewAuctionManager(um, ct, br.Broadcast)
 
 	item := &models.Item{
 		ID:         1,
@@ -102,7 +105,7 @@ func TestAuctionManagerThunderingHerd(t *testing.T) {
 			// Using random sleep to stagger the "herd"
 			time.Sleep(time.Duration(rand.Intn(10)) * time.Millisecond)
 			amount := float64(200 + userID*10)
-			_ = am.PlaceBid(1, userID, amount)
+			_, _ = am.PlaceBid(1, userID, amount)
 		}(i)
 	}
 
@@ -117,7 +120,8 @@ func TestAuctionManagerThunderingHerd(t *testing.T) {
 func TestAuctionManagerRaceToFinish(t *testing.T) {
 	um := user.NewUserManager()
 	ct := category.NewCategoryTree()
-	am := NewAuctionManager(um, ct)
+	br := sse.NewBroker(nil)
+	am := NewAuctionManager(um, ct, br.Broadcast)
 
 	item := &models.Item{
 		ID:         1,
@@ -139,7 +143,7 @@ func TestAuctionManagerRaceToFinish(t *testing.T) {
 	go func() {
 		defer wg.Done()
 		for i := 1; i < 100; i++ {
-			err := am.PlaceBid(1, 1, float64(100+i))
+			_, err := am.PlaceBid(1, 1, float64(100+i))
 			if err != nil {
 				// Auction likely ended
 				return
@@ -160,7 +164,8 @@ func TestAuctionManagerRaceToFinish(t *testing.T) {
 func TestAuctionManagerChaos(t *testing.T) {
 	um := user.NewUserManager()
 	ct := category.NewCategoryTree()
-	am := NewAuctionManager(um, ct)
+	br := sse.NewBroker(nil)
+	am := NewAuctionManager(um, ct, br.Broadcast)
 
 	for i := 1; i <= 5; i++ {
 		item := &models.Item{
@@ -194,7 +199,7 @@ func TestAuctionManagerChaos(t *testing.T) {
 
 				switch op {
 				case 0:
-					_ = am.PlaceBid(itemID, userID, float64(100+r.Intn(1000)))
+					_, _ = am.PlaceBid(itemID, userID, float64(100+r.Intn(1000)))
 				case 1:
 					_ = am.RetractBid(itemID, userID)
 				case 2:

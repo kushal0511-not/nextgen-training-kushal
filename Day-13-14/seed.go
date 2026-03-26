@@ -12,13 +12,8 @@ import (
 	"github.com/nextgen-training-kushal/Day-13/user"
 )
 
-func main() {
+func Seed(userManager *user.UserManager, categoryTree *category.CategoryTree, auctionManager *auction.AuctionManager) {
 	fmt.Println("=== Bidding System: End-to-End Simulation ===")
-
-	// 1. Initialize System Components
-	userManager := user.NewUserManager()
-	categoryTree := category.NewCategoryTree()
-	auctionManager := auction.NewAuctionManager(userManager, categoryTree)
 
 	// 2. Setup Infrastructure
 	categoryTree.AddCategory([]string{"Electronics", "Phones"})
@@ -60,7 +55,7 @@ func main() {
 			numBids := rand.Intn(5) + 1
 			for b := 0; b < numBids; b++ {
 				amount := float64(500 + uid*10 + b*5)
-				_ = auctionManager.PlaceBid(itemID, uid, amount)
+				_, _ = auctionManager.PlaceBid(itemID, uid, amount)
 				time.Sleep(time.Millisecond * time.Duration(rand.Intn(10)))
 			}
 		}(i)
@@ -77,7 +72,7 @@ func main() {
 
 	highAmount := 10000.0
 	fmt.Printf("Charlie placing high bid of $%.2f...\n", highAmount)
-	err := auctionManager.PlaceBid(itemID, specialUserID, highAmount)
+	_, err := auctionManager.PlaceBid(itemID, specialUserID, highAmount)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 	}

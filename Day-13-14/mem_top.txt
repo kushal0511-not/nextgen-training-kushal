@@ -1,0 +1,34 @@
+File: auction.test
+Build ID: 46424eefe6ceef8a86aa74e4e632a2905d00b3da
+Type: alloc_space
+Time: 2026-03-26 16:58:32 IST
+Showing nodes accounting for 6190.62kB, 100% of 6190.62kB total
+      flat  flat%   sum%        cum   cum%
+    2565kB 41.43% 41.43%     2565kB 41.43%  runtime.allocm
+ 1184.27kB 19.13% 60.56%  1184.27kB 19.13%  runtime/pprof.StartCPUProfile
+  902.59kB 14.58% 75.14%   902.59kB 14.58%  compress/flate.NewWriter (inline)
+  514.63kB  8.31% 83.46%   514.63kB  8.31%  math/rand.newSource (inline)
+  512.08kB  8.27% 91.73%   512.08kB  8.27%  compress/gzip.NewWriterLevel
+  512.05kB  8.27%   100%   512.05kB  8.27%  sync.runtime_SemacquireWaitGroup
+         0     0%   100%   902.59kB 14.58%  compress/gzip.(*Writer).Write
+         0     0%   100%   512.05kB  8.27%  github.com/nextgen-training-kushal/Day-13/auction.TestConcurrentBidding
+         0     0%   100%   514.63kB  8.31%  github.com/nextgen-training-kushal/Day-13/auction.TestConcurrentBidding.func1
+         0     0%   100%  1184.27kB 19.13%  main.main
+         0     0%   100%   514.63kB  8.31%  math/rand.NewSource (inline)
+         0     0%   100%  1184.27kB 19.13%  runtime.main
+         0     0%   100%     2565kB 41.43%  runtime.mstart
+         0     0%   100%     2565kB 41.43%  runtime.mstart0
+         0     0%   100%     2565kB 41.43%  runtime.mstart1
+         0     0%   100%     2565kB 41.43%  runtime.newm
+         0     0%   100%     2565kB 41.43%  runtime.resetspinning
+         0     0%   100%     2565kB 41.43%  runtime.schedule
+         0     0%   100%     2565kB 41.43%  runtime.startm
+         0     0%   100%     2565kB 41.43%  runtime.wakep
+         0     0%   100%   902.59kB 14.58%  runtime/pprof.(*profileBuilder).build
+         0     0%   100%   512.08kB  8.27%  runtime/pprof.newProfileBuilder
+         0     0%   100%  1414.66kB 22.85%  runtime/pprof.profileWriter
+         0     0%   100%   512.05kB  8.27%  sync.(*WaitGroup).Wait
+         0     0%   100%  1184.27kB 19.13%  testing.(*M).Run
+         0     0%   100%  1184.27kB 19.13%  testing.(*M).before
+         0     0%   100%   512.05kB  8.27%  testing.tRunner
+         0     0%   100%  1184.27kB 19.13%  testing/internal/testdeps.TestDeps.StartCPUProfile

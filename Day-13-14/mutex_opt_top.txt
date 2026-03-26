@@ -1,0 +1,31 @@
+File: auction.test
+Build ID: 2d233a900c0723ccdf32b0560b8d3edaab73bb4e
+Type: delay
+Time: 2026-03-26 17:07:36 IST
+Showing nodes accounting for 19.82us, 100% of 19.82us total
+      flat  flat%   sum%        cum   cum%
+    9.04us 45.63% 45.63%     9.04us 45.63%  runtime.unlock (inline)
+    8.50us 42.89% 88.52%    14.68us 74.05%  sync.(*Mutex).Unlock (inline)
+    2.28us 11.48%   100%     2.28us 11.48%  runtime._LostContendedRuntimeLock
+         0     0%   100%    17.55us 88.52%  github.com/nextgen-training-kushal/Day-13/auction.(*AuctionManager).PlaceBid
+         0     0%   100%    17.55us 88.52%  github.com/nextgen-training-kushal/Day-13/auction.TestConcurrentBidding.func1
+         0     0%   100%     8.50us 42.89%  github.com/nextgen-training-kushal/Day-13/auction.TestConcurrentBidding.gowrap1
+         0     0%   100%     6.18us 31.16%  internal/sync.(*Mutex).Unlock (inline)
+         0     0%   100%     6.18us 31.16%  internal/sync.(*Mutex).unlockSlow
+         0     0%   100%     6.18us 31.16%  internal/sync.runtime_Semrelease
+         0     0%   100%     2.87us 14.46%  runtime.(*mcache).nextFree
+         0     0%   100%     2.87us 14.46%  runtime.(*mcache).refill
+         0     0%   100%     2.87us 14.46%  runtime.(*mcentral).cacheSpan
+         0     0%   100%     2.87us 14.46%  runtime.convT64
+         0     0%   100%     2.87us 14.46%  runtime.copystack
+         0     0%   100%     2.87us 14.46%  runtime.deductSweepCredit
+         0     0%   100%     2.87us 14.46%  runtime.mallocgc
+         0     0%   100%     2.87us 14.46%  runtime.mallocgcTiny
+         0     0%   100%     2.87us 14.46%  runtime.newstack
+         0     0%   100%     6.18us 31.16%  runtime.saveBlockEventStack
+         0     0%   100%     6.18us 31.16%  runtime.saveblockevent
+         0     0%   100%     6.18us 31.16%  runtime.semrelease1
+         0     0%   100%     2.87us 14.46%  runtime.stackalloc
+         0     0%   100%     2.87us 14.46%  runtime.stackcacherefill
+         0     0%   100%     6.18us 31.16%  runtime.stkbucket
+         0     0%   100%     6.18us 31.16%  sync.event

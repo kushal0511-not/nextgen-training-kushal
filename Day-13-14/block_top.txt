@@ -1,0 +1,26 @@
+File: auction.test
+Build ID: 46424eefe6ceef8a86aa74e4e632a2905d00b3da
+Type: delay
+Time: 2026-03-26 16:58:32 IST
+Showing nodes accounting for 306.96ms, 99.86% of 307.39ms total
+Dropped 16 nodes (cum <= 1.54ms)
+      flat  flat%   sum%        cum   cum%
+  203.63ms 66.25% 66.25%   203.63ms 66.25%  runtime.chanrecv1
+  103.33ms 33.62% 99.86%   103.33ms 33.62%  sync.(*WaitGroup).Wait
+         0     0% 99.86%   103.33ms 33.62%  github.com/nextgen-training-kushal/Day-13/auction.TestConcurrentBidding
+         0     0% 99.86%   203.61ms 66.24%  main.main
+         0     0% 99.86%   203.61ms 66.24%  runtime.main
+         0     0% 99.86%   100.13ms 32.57%  runtime/pprof.StopCPUProfile
+         0     0% 99.86%   100.13ms 32.57%  sync.(*Once).Do (inline)
+         0     0% 99.86%   100.13ms 32.57%  sync.(*Once).doSlow
+         0     0% 99.86%   203.61ms 66.24%  testing.(*M).Run
+         0     0% 99.86%   100.13ms 32.57%  testing.(*M).Run.deferwrap1
+         0     0% 99.86%   100.13ms 32.57%  testing.(*M).after
+         0     0% 99.86%   100.13ms 32.57%  testing.(*M).after.func1
+         0     0% 99.86%   100.13ms 32.57%  testing.(*M).writeProfiles
+         0     0% 99.86%   103.48ms 33.67%  testing.(*T).Run
+         0     0% 99.86%   103.33ms 33.62%  testing.(*T).Run.gowrap1
+         0     0% 99.86%   103.48ms 33.67%  testing.runTests
+         0     0% 99.86%   103.48ms 33.67%  testing.runTests.func1
+         0     0% 99.86%   206.82ms 67.28%  testing.tRunner
+         0     0% 99.86%   100.13ms 32.57%  testing/internal/testdeps.TestDeps.StopCPUProfile

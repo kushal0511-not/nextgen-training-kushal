@@ -1,0 +1,45 @@
+File: auction.test
+Build ID: 46424eefe6ceef8a86aa74e4e632a2905d00b3da
+Type: delay
+Time: 2026-03-26 16:58:32 IST
+Showing nodes accounting for 556.36us, 100% of 556.36us total
+Dropped 5 nodes (cum <= 2.78us)
+      flat  flat%   sum%        cum   cum%
+  411.81us 74.02% 74.02%   411.81us 74.02%  sync.(*Mutex).Unlock
+  144.55us 25.98%   100%   144.55us 25.98%  runtime.unlock (inline)
+         0     0%   100%   441.90us 79.43%  github.com/nextgen-training-kushal/Day-13/auction.(*AuctionManager).PlaceBid
+         0     0%   100%   441.90us 79.43%  github.com/nextgen-training-kushal/Day-13/auction.TestConcurrentBidding.func1
+         0     0%   100%   411.81us 74.02%  github.com/nextgen-training-kushal/Day-13/auction.TestConcurrentBidding.gowrap1
+         0     0%   100%    25.25us  4.54%  internal/sync.(*Mutex).Lock (inline)
+         0     0%   100%    25.25us  4.54%  internal/sync.(*Mutex).lockSlow
+         0     0%   100%    25.25us  4.54%  internal/sync.runtime_SemacquireMutex
+         0     0%   100%     4.84us  0.87%  runtime.(*mcache).nextFree
+         0     0%   100%     4.84us  0.87%  runtime.(*mcache).refill
+         0     0%   100%     4.84us  0.87%  runtime.(*mcentral).cacheSpan
+         0     0%   100%    25.25us  4.54%  runtime.acquireSudog
+         0     0%   100%     4.84us  0.87%  runtime.convT64
+         0     0%   100%    30.09us  5.41%  runtime.copystack
+         0     0%   100%     4.84us  0.87%  runtime.deductSweepCredit
+         0     0%   100%    53.54us  9.62%  runtime.findRunnable
+         0     0%   100%    43.78us  7.87%  runtime.forEachP (inline)
+         0     0%   100%    43.78us  7.87%  runtime.forEachPInternal
+         0     0%   100%    43.78us  7.87%  runtime.gcBgMarkWorker
+         0     0%   100%    43.78us  7.87%  runtime.gcMarkDone
+         0     0%   100%    18.28us  3.29%  runtime.gcMarkDone.forEachP.func5
+         0     0%   100%    25.51us  4.58%  runtime.gcMarkTermination
+         0     0%   100%    25.51us  4.58%  runtime.gcMarkTermination.forEachP.func6
+         0     0%   100%    17.14us  3.08%  runtime.gopreempt_m (inline)
+         0     0%   100%    17.14us  3.08%  runtime.goschedImpl
+         0     0%   100%    30.09us  5.41%  runtime.mallocgc
+         0     0%   100%     4.84us  0.87%  runtime.mallocgcTiny
+         0     0%   100%    53.54us  9.62%  runtime.mcall
+         0     0%   100%    17.14us  3.08%  runtime.morestack
+         0     0%   100%    25.25us  4.54%  runtime.newobject
+         0     0%   100%    47.23us  8.49%  runtime.newstack
+         0     0%   100%    53.54us  9.62%  runtime.park_m
+         0     0%   100%    53.54us  9.62%  runtime.schedule
+         0     0%   100%    25.25us  4.54%  runtime.semacquire1
+         0     0%   100%    30.09us  5.41%  runtime.stackalloc
+         0     0%   100%    30.09us  5.41%  runtime.stackcacherefill
+         0     0%   100%    43.78us  7.87%  runtime.systemstack
+         0     0%   100%    25.25us  4.54%  sync.(*Mutex).Lock (inline)

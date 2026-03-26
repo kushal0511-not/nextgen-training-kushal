@@ -25,14 +25,16 @@ type AuctionManager struct {
 	userManager  *user.UserManager
 	categoryTree *category.CategoryTree
 	mu           sync.RWMutex // Protects the items map itself
+	broadcast    func(itemID int, bid models.Bid)
 }
 
 // NewAuctionManager creates a new AuctionManager.
-func NewAuctionManager(userManager *user.UserManager, categoryTree *category.CategoryTree) *AuctionManager {
+func NewAuctionManager(userManager *user.UserManager, categoryTree *category.CategoryTree, broadcast func(itemID int, bid models.Bid)) *AuctionManager {
 	return &AuctionManager{
 		items:        make(map[int]*ItemContext),
 		userManager:  userManager,
 		categoryTree: categoryTree,
+		broadcast:    broadcast,
 	}
 }
 
@@ -47,36 +49,39 @@ func (am *AuctionManager) RegisterItem(item *models.Item) {
 }
 
 // PlaceBid validates and places a bid on an item.
-func (am *AuctionManager) PlaceBid(itemID, userID int, amount float64) error {
+func (am *AuctionManager) PlaceBid(itemID, userID int, amount float64) (models.Bid, error) {
 	am.mu.RLock()
 	ctx, exists := am.items[itemID]
 	am.mu.RUnlock()
 
 	if !exists {
-		return fmt.Errorf("item %d not found", itemID)
+		return models.Bid{}, fmt.Errorf("item %d not found", itemID)
 	}
 
 	// Fine-grained lock for this item
 	ctx.mu.Lock()
-	defer ctx.mu.Unlock()
 
 	// 1. Validate auction active
 	now := time.Now()
 	if now.Before(ctx.Item.StartTime) || now.After(ctx.Item.EndTime) || ctx.Item.Status != models.StatusActive {
-		return errors.New("auction is not currently active")
+		ctx.mu.Unlock()
+		return models.Bid{}, errors.New("auction is not currently active")
 	}
 
 	// 2. Validate amount > current bid
 	if ctx.Item.CurrentBid != nil && amount <= ctx.Item.CurrentBid.Amount {
-		return fmt.Errorf("bid amount %.2f must be greater than current bid %.2f", amount, ctx.Item.CurrentBid.Amount)
+		ctx.mu.Unlock()
+		return models.Bid{}, fmt.Errorf("bid amount %.2f must be greater than current bid %.2f", amount, ctx.Item.CurrentBid.Amount)
 	}
 	if amount <= ctx.Item.StartPrice {
-		return fmt.Errorf("bid amount %.2f must be greater than start price %.2f", amount, ctx.Item.StartPrice)
+		ctx.mu.Unlock()
+		return models.Bid{}, fmt.Errorf("bid amount %.2f must be greater than start price %.2f", amount, ctx.Item.StartPrice)
 	}
 
 	// 3. Validate and deduct user balance
 	if err := am.userManager.DeductBalance(userID, amount); err != nil {
-		return err
+		ctx.mu.Unlock()
+		return models.Bid{}, err
 	}
 
 	// 4. Create and record bid
@@ -98,10 +103,18 @@ func (am *AuctionManager) PlaceBid(itemID, userID int, amount float64) error {
 	if err := am.userManager.PushBidToUndoStack(userID, newBid); err != nil {
 		// Rollback balance if pushing to undo stack fails (unexpected)
 		_ = am.userManager.RestoreBalance(userID, amount)
-		return err
+		ctx.mu.Unlock()
+		return models.Bid{}, err
 	}
 
-	return nil
+	// Release lock before broadcasting to reduce contention
+	ctx.mu.Unlock()
+
+	if am.broadcast != nil {
+		am.broadcast(itemID, newBid)
+	}
+
+	return newBid, nil
 }
 
 // RetractBid retracts the last bid for a user on specific item.
@@ -172,26 +185,90 @@ func (am *AuctionManager) EndAuction(itemID int) (*models.Bid, error) {
 	return &winner, nil
 }
 
-// BrowseCategory returns items in a specific category.
+// BrowseCategory returns items in a specific category (and its subcategories).
 func (am *AuctionManager) BrowseCategory(path []string) ([]*models.Item, error) {
-	_, err := am.categoryTree.FindCategory(path)
+	node, err := am.categoryTree.FindCategory(path)
 	if err != nil {
 		return nil, err
+	}
+
+	// 1. Get all category names in the subtree
+	targetCategories := node.GetAllCategoryNames()
+	targetSet := make(map[string]struct{})
+	for _, cat := range targetCategories {
+		targetSet[cat] = struct{}{}
 	}
 
 	am.mu.RLock()
 	defer am.mu.RUnlock()
 
 	var results []*models.Item
-	catStr := ""
-	if len(path) > 0 {
-		catStr = path[len(path)-1]
-	}
-
 	for _, ctx := range am.items {
-		if ctx.Item.Category == catStr {
+		if _, exists := targetSet[ctx.Item.Category]; exists {
 			results = append(results, ctx.Item)
 		}
 	}
 	return results, nil
+}
+
+// GetItem returns an item by its ID.
+func (am *AuctionManager) GetItem(id int) (*models.Item, error) {
+	am.mu.RLock()
+	defer am.mu.RUnlock()
+	ctx, exists := am.items[id]
+	if !exists {
+		return nil, fmt.Errorf("item %d not found", id)
+	}
+	return ctx.Item, nil
+}
+
+func (am *AuctionManager) GetBidsByItem(itemID int) ([]models.Bid, error) {
+	am.mu.RLock()
+	ctx, exists := am.items[itemID]
+	am.mu.RUnlock()
+
+	if !exists {
+		return nil, fmt.Errorf("item %d not found", itemID)
+	}
+
+	ctx.mu.Lock()
+	defer ctx.mu.Unlock()
+
+	var bids []models.Bid
+	for e := ctx.Item.BidHistory; e != nil; e = e.Next {
+		bids = append(bids, e.Bid)
+	}
+	return bids, nil
+}
+
+func (am *AuctionManager) GetStats() models.AuctionStats {
+	am.mu.RLock()
+	defer am.mu.RUnlock()
+
+	var totalItems, activeItems, endedItems int
+	var totalBids int64
+	var totalRevenue float64
+
+	for _, ctx := range am.items {
+		totalItems++
+		switch ctx.Item.Status {
+		case models.StatusActive:
+			activeItems++
+		case models.StatusEnded:
+			endedItems++
+		}
+
+		totalBids += int64(ctx.Heap.SafeLen())
+		if ctx.Item.CurrentBid != nil {
+			totalRevenue += ctx.Item.CurrentBid.Amount
+		}
+	}
+
+	return models.AuctionStats{
+		TotalItems:   totalItems,
+		ActiveItems:  activeItems,
+		EndedItems:   endedItems,
+		TotalBids:    totalBids,
+		TotalRevenue: totalRevenue,
+	}
 }

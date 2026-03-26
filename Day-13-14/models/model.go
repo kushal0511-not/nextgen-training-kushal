@@ -26,6 +26,14 @@ type Bid struct {
 	Timestamp time.Time `json:"timestamp"`
 }
 
+type AuctionStats struct {
+	TotalItems   int     `json:"total_items"`
+	ActiveItems  int     `json:"active_items"`
+	EndedItems   int     `json:"ended_items"`
+	TotalBids    int64   `json:"total_bids"`
+	TotalRevenue float64 `json:"total_revenue"`
+}
+
 // BidNode represents a node in the linked list for bid history.
 type BidNode struct {
 	Bid  Bid
