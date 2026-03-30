@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"net/http/pprof"
 
-	"github.com/nextgen-training-kushal/Day-13/models"
+	"github.com/nextgen-training-kushal/Day-13-14/models"
 )
 
 func (app *App) CreateUser(w http.ResponseWriter, r *http.Request) {

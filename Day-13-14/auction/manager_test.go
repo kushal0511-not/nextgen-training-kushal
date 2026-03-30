@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nextgen-training-kushal/Day-13/category"
-	"github.com/nextgen-training-kushal/Day-13/models"
-	"github.com/nextgen-training-kushal/Day-13/sse"
-	"github.com/nextgen-training-kushal/Day-13/user"
+	"github.com/nextgen-training-kushal/Day-13-14/category"
+	"github.com/nextgen-training-kushal/Day-13-14/models"
+	"github.com/nextgen-training-kushal/Day-13-14/sse"
+	"github.com/nextgen-training-kushal/Day-13-14/user"
 )
 
 func TestAuctionManager(t *testing.T) {

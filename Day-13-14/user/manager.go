@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/nextgen-training-kushal/Day-13/models"
+	"github.com/nextgen-training-kushal/Day-13-14/models"
 )
 
 // UserManager manages users using a HashMap.

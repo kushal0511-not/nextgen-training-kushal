@@ -7,10 +7,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/nextgen-training-kushal/Day-13/auction"
-	"github.com/nextgen-training-kushal/Day-13/category"
-	"github.com/nextgen-training-kushal/Day-13/sse"
-	"github.com/nextgen-training-kushal/Day-13/user"
+	"github.com/nextgen-training-kushal/Day-13-14/auction"
+	"github.com/nextgen-training-kushal/Day-13-14/category"
+	"github.com/nextgen-training-kushal/Day-13-14/sse"
+	"github.com/nextgen-training-kushal/Day-13-14/user"
 )
 
 type App struct {

@@ -4,7 +4,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/nextgen-training-kushal/Day-13/models"
+	"github.com/nextgen-training-kushal/Day-13-14/models"
 )
 
 func TestUserManager(t *testing.T) {

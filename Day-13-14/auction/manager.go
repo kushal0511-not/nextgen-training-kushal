@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/nextgen-training-kushal/Day-13/bid"
-	"github.com/nextgen-training-kushal/Day-13/category"
-	"github.com/nextgen-training-kushal/Day-13/models"
-	"github.com/nextgen-training-kushal/Day-13/user"
+	"github.com/nextgen-training-kushal/Day-13-14/bid"
+	"github.com/nextgen-training-kushal/Day-13-14/category"
+	"github.com/nextgen-training-kushal/Day-13-14/models"
+	"github.com/nextgen-training-kushal/Day-13-14/user"
 )
 
 // ItemContext manages an item's auction state with fine-grained locking.

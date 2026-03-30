@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/nextgen-training-kushal/Day-13/auction"
-	"github.com/nextgen-training-kushal/Day-13/category"
-	"github.com/nextgen-training-kushal/Day-13/models"
-	"github.com/nextgen-training-kushal/Day-13/user"
+	"github.com/nextgen-training-kushal/Day-13-14/auction"
+	"github.com/nextgen-training-kushal/Day-13-14/category"
+	"github.com/nextgen-training-kushal/Day-13-14/models"
+	"github.com/nextgen-training-kushal/Day-13-14/user"
 )
 
 func Seed(userManager *user.UserManager, categoryTree *category.CategoryTree, auctionManager *auction.AuctionManager) {
